@@ -1,0 +1,63 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+   <div class="shop_category">
+        <div class="shop_navigation">
+            <nav class="shop_nav">
+                <ul>
+                    <li><a href="{% url 'shop' %}" class="shop_li">All</a></li>
+                    <li><a href="/shop?category=1" class="shop_li">Dog</a></li>
+                    <li><a href="/shop?category=2" class="shop_li">Cat</a></li>
+                    <li><a href="/shop?category=3" class="shop_li">Bird</a></li>
+                    <li><a href="/shop?category=4" class="shop_li">Toy</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <section class="shop_dog">
+        <div class="box">
+            {% for item in items %}         
+                <div class="product_box">
+                    <div class="product_image">
+                        <img src="{{ item.image.url }}">
+                    </div>
+                    <div class="product_content">
+                        <h3>{{ item.title }}</h3>
+                        <div class="product_cart">
+                            <button class="icon_cart"><img src="{% static 'images/icon/cart.png' %}" class="icon_cart" data-title="{{ item.title }}" data-price="{{ item.price }}" data-image="{{ item.image.url }}"></button>
+                            <div id="pop_up" class="pop_up">
+                                <button id="pop_close" class="pop_close">X</button>
+                                <div class="pop_wrapper">
+                                    <div class="pop_image">
+                                        <img src="{{ item.image.url }}" id="pop_image" style="width: 250px; height: auto; margin: -70px -150px;">
+                                    </div>
+                                    <div class="pop_content">
+                                        <p class="pop_title" id="pop_title">{{ item.title }}</p>
+                                        <p class="pop_price" id="pop_price">₱{{ item.price }}</p>
+                                        <div class="pop_measure">
+                                            <p class="pop_stock">Stock: <span id="pop_stock">{{ item.stock }}</span></p>
+                                            <div class="quantity-container">
+                                                <span>Quantity:</span>
+                                                <button type="button" class="quantity-btn" id="minus-btn" onclick="updateQuantity(-1)">-</button>
+                                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ item.stock }}" readonly>
+                                                <button type="button" class="quantity-btn" id="plus-btn" onclick="updateQuantity(1)">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="pop_cart">
+                                            <form action="{% url 'add_to_cart' item.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <button type="submit" {% if item.stock == 0 %}disabled{% endif %}>ADD TO CART</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product_price">₱{{ item.price }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock content %}

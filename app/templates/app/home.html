@@ -1,0 +1,22 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="banner">
+        <h1>High Quality Pet Food</h1>
+            <p>Sale up to 40% off today</p>
+        <div class="banner_shop">
+            <a href="{% url 'shop' %}">Shop Now</a>
+        </div>
+        <div class="paws">
+            <img src="{% static 'images/bluepaw1.png' %}" class="paw1">
+        </div>
+        <div class="paws">
+            <img src="{% static 'images/bluepaw1.png' %}" class="paw2">
+            <img src="{% static 'images/bluepaw1.png' %}" class="paw3">
+        </div>
+        <div class="paws">
+            <img src="{% static 'images/pawwhite.png' %}" class="pawwhite">
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Shop</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/base.js' %}"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a class="title" href="{% url 'home' %}">JLA Pet <span class="titles">Supplies</span></a>
+            <div class="nav">
+                <input type="text" name="search" class="search_input" placeholder="Search">
+                    <img src="{% static 'images/icon/search.png' %}" class="searcher">
+                <div class="bottom">
+                    <a href="/shop?category=1" class="search_bottom">Dog</a>
+                    <a href="/shop?category=2" class="search_bottom">Cat</a>
+                    <a href="/shop?category=3" class="search_bottom">Bird</a>
+                    <a href="/shop?category=4" class="search_bottom">Toy</a>
+                </div>
+            </div>
+            <div class="search">
+                <a href="" class="search_list" aria-label="User"><img src="{% static 'images/icon/user.png' %}" class="search_list"></a>
+                <a href="{% url 'cart' %}" class="search_list" id="cart-icon" aria-label="Cart"><img src="{% static 'images/icon/cart.png' %}" class="search_list"><span class="badge" id="badge">{{ cart_count }}</span></a>
+            </div>
+            <div class="cart_dropdown hidden" id="cart-dropdown">
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+    </header>
+    {% block content %}
+
+    {% endblock content %}
+</body>
+</html>
