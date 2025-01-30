@@ -1,0 +1,45 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="orderpage">
+        <h2>Order Confirmation</h2>
+        <div class="ordertable">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in order_items %}
+                    <tr>
+                        <td>{{ item.item_id }}</td>
+                        <td>{{ item.item.title }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₱{{ item.sub_total|floatformat:2 }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+        <div class="order_items">
+            <form method="POST">
+                {% csrf_token %}
+                <label>First Name:</label>
+                    <input type="text" name="first_name" required>
+                <label>Last Name:</label>
+                    <input type="text" name="last_name" required>
+                <label>Address:</label>
+                    <input type="text" class="orderaddress" name="address" required>
+                <label>Contact:</label>
+                    <input type="number" name="contact" required>
+                <button type="submit">Checkout</button>
+            </form>
+        </div>
+    
+{% endblock content %}

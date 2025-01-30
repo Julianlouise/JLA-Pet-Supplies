@@ -1,8 +1,43 @@
-<h1>Checkout</h1>
-<form action="{% url 'process_order' %}" method="post">
-    {% csrf_token %}
-    <input type="text" name="name" placeholder="Full Name" required>
-    <input type="text" name="address" placeholder="Address" required>
-    <input type="number" name="contact" placeholder="Contact" required>
-    <button type="submit">Place Order</button>
-</form>
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="checkoutpage">
+    <h1>Checkout</h1>
+    <div class="checkouttable">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in order_items %}
+                <tr>
+                    <td>{{ item.item_id }}</td>
+                    <td>{{ item.item.title }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₱{{ item.sub_total|floatformat:2 }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <p class="checkouttotal"><span>Total Price: </span>{{ total_price|floatformat:2 }}</p>
+    </div>
+</div>
+<div class="checkoutdetail">
+    <form action="{% url 'process_order' %}" method="POST">
+        {% csrf_token %}
+        <label>Name: </label>
+            <p>{{ order.first_name }} {{ order.last_name }}</p>
+        <label>Address: </label>
+            <p>{{ order.address }}</p>
+        <label>Contact: </label>
+            <p>{{ order.contact }}</p>
+        <button type="submit">Place Order</button>
+    </form>
+</div>
+{% endblock content %}

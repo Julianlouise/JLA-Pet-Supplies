@@ -11,6 +11,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+document.querySelectorAll('.add_to_cart').forEach(button => {
+    button.addEventListener('click', (e) => {
+        const title = e.target.getAttribute('data-title');
+        const price = e.target.getAttribute('data-price');
+        const imageSrc = e.target.getAttribute('data-image');
+
+        addToCart({ title, price, imageSrc });
+    });
+});
+
+let cartItems = [];
+
+function addToCart(item) {
+    const existingItem = cartItems.find(cartItem => cartItem.title === item.title);
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        item.quantity = 1;
+        cartItems.push(item);
+    }
+    updateCart(cartItems);
+}
+
 function updateCart(items) {
     const cartDropdown = document.getElementById('cart-dropdown');
     const cartCount = document.getElementById('badge');
@@ -136,3 +160,41 @@ function updateQuantity(change) {
     }
     quantityInput.value = newQuantity;
 }
+
+document.getElementById('addItemButton').onclick = function() {
+    const title = document.getElementById('title').value;
+    const price = document.getElementById('price').value;
+    const stock = document.getElementById('stock').value;
+    const category = document.getElementById('category').value;
+
+    fetch("{% url 'add_item' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}' 
+        },
+        body: JSON.stringify({
+            title: title,
+            price: price,
+            stock: stock,
+            category: category
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = "{% url 'shop' %}";
+        } else {
+            alert('Failed to add item. Please try again.');
+        }
+    });
+};
+
+document.addEventListener('click', function(event) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    for (var i = 0; i < dropdowns.length; i++) {
+        var dropdown = dropdowns[i];
+        if (!dropdown.contains(event.target) && !dropdown.previousElementSibling.contains(event.target)) {
+            dropdown.style.display = 'none';
+        }
+    }
+});

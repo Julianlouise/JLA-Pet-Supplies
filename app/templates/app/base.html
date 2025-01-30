@@ -13,8 +13,10 @@
         <div class="container">
             <a class="title" href="{% url 'home' %}">JLA Pet <span class="titles">Supplies</span></a>
             <div class="nav">
-                <input type="text" name="search" class="search_input" placeholder="Search">
-                    <img src="{% static 'images/icon/search.png' %}" class="searcher">
+                <form action="{% url 'shop' %}" method="GET">
+                <input type="text" name="search" class="search_input" placeholder="Search" value="{{ request.GET.search }}">
+                    <button type="submit"><img src="{% static 'images/icon/search.png' %}" class="searcher"></button>
+                </form>
                 <div class="bottom">
                     <a href="/shop?category=1" class="search_bottom">Dog</a>
                     <a href="/shop?category=2" class="search_bottom">Cat</a>
@@ -23,7 +25,11 @@
                 </div>
             </div>
             <div class="search">
-                <a href="" class="search_list" aria-label="User"><img src="{% static 'images/icon/user.png' %}" class="search_list"></a>
+                <a href="{% url 'signup' %}" class="search_list" aria-label="User"><img src="{% static 'images/icon/user.png' %}" class="search_list"></a>
+                {% if user.is_authenticated %}
+                <p>Welcome, {{ user.username }}!</p>
+                <a href="{% url 'logout' %}">Logout</a>
+                {% endif %}
                 <a href="{% url 'cart' %}" class="search_list" id="cart-icon" aria-label="Cart"><img src="{% static 'images/icon/cart.png' %}" class="search_list"><span class="badge" id="badge">{{ cart_count }}</span></a>
             </div>
             <div class="cart_dropdown hidden" id="cart-dropdown">
